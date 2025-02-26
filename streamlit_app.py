@@ -3,32 +3,31 @@ import subprocess
 import os
 
 st.title("GPT‑Engineer Web Interface")
-
 st.markdown("""
-This app wraps GPT‑Engineer. Enter your prompt below and the app will run GPT‑Engineer to generate a codebase.
-Make sure GPT‑Engineer is installed and accessible in your environment.
+This app wraps GPT‑Engineer into a web interface.
+Enter your project prompt below and click "Generate Code".
+Make sure GPT‑Engineer is installed and available in your environment.
 """)
 
-# User input for the project prompt
+# Input field for the project prompt
 prompt = st.text_area("Enter your project prompt", height=150)
 
 if st.button("Generate Code"):
     if not prompt.strip():
         st.error("Please enter a prompt.")
     else:
-        # Create a directory for the project (if it doesn't exist)
+        # Create a directory for the generated project (if it doesn't already exist)
         project_dir = "generated_project"
         os.makedirs(project_dir, exist_ok=True)
-        
-        # Save the prompt into a file named "prompt" inside the project directory
+
+        # Save the prompt into a file (as expected by GPT‑Engineer)
         prompt_file = os.path.join(project_dir, "prompt")
         with open(prompt_file, "w") as f:
             f.write(prompt)
-        
-        st.info("Running GPT‑Engineer... This might take a while.")
-        
-        # Call GPT‑Engineer via its command-line interface.
-        # Adjust the command 'gpte' if your installation uses a different command.
+
+        st.info("Running GPT‑Engineer... This may take a while.")
+
+        # Call GPT‑Engineer via its CLI; adjust the command as needed
         try:
             result = subprocess.run(
                 ["gpte", project_dir],
